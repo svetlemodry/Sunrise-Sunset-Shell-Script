@@ -9,8 +9,8 @@ tmpfile=/tmp/$location.out
 # Obtain sunrise and sunset raw data from weather.com
 wget -q "https://weather.com/weather/today/l/$location" -O "$tmpfile"
 
-SUNR=$(grep SunriseSunset "$tmpfile" | grep -oE '((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))' | head -1)
-SUNS=$(grep SunriseSunset "$tmpfile" | grep -oE '((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))' | tail -1)
+SUNR=$(grep -Po '<p class="TwcSunChart--dateValue--TzXBr">\K\d+:\d+\d+ am' "$tmpfile")
+SUNS=$(grep -Po '<p class="TwcSunChart--dateValue--TzXBr">\K\d+:\d+\d+ pm' "$tmpfile")
 
 
 sunrise=$(date --date="$SUNR" +%R)
